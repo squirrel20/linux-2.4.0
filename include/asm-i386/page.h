@@ -76,9 +76,10 @@ typedef struct { unsigned long pgprot; } pgprot_t;
  *
  * If you want more physical memory than this then see the CONFIG_HIGHMEM4G
  * and CONFIG_HIGHMEM64G options in the kernel configuration.
+ *
  */
 
-#define __PAGE_OFFSET		(0xC0000000)
+#define __PAGE_OFFSET		(0xC0000000)    // 0xC0000000 = 3 * 2^30 = 3G
 
 #ifndef __ASSEMBLY__
 
@@ -111,6 +112,12 @@ extern __inline__ int get_order(unsigned long size)
 
 #endif /* __ASSEMBLY__ */
 
+/*
+ * 对于系统空间而言，给定一个虚拟地址x，其物理地址是 x - PAGE_OFFSET
+ * 给定一个物理地址，其虚拟地址是 x + PAGE_OFFSET
+ *
+ * PAGE_OFFSET 也代表着用户空间的上限。
+ */
 #define PAGE_OFFSET		((unsigned long)__PAGE_OFFSET)
 #define __pa(x)			((unsigned long)(x)-PAGE_OFFSET)
 #define __va(x)			((void *)((unsigned long)(x)+PAGE_OFFSET))

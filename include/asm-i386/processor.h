@@ -256,7 +256,10 @@ extern unsigned int BIOS_revision;
 extern unsigned int mca_pentium_flag;
 
 /*
+ * 用户空间进程大小，
+ * 当谈论一个用户进程的大小时，并不包括此进程在系统空间中共享的资源
  * User space process size: 3GB (default).
+ * PAGE_OFFSET include/asm-i386/page.h
  */
 #define TASK_SIZE	(PAGE_OFFSET)
 

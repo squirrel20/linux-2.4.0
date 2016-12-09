@@ -25,6 +25,9 @@ static inline void enter_lazy_tlb(struct mm_struct *mm, struct task_struct *tsk,
 }
 #endif
 
+/*
+ * 进程切换
+ */
 static inline void switch_mm(struct mm_struct *prev, struct mm_struct *next, struct task_struct *tsk, unsigned cpu)
 {
 	if (prev != next) {
@@ -40,7 +43,10 @@ static inline void switch_mm(struct mm_struct *prev, struct mm_struct *next, str
 		cpu_tlbstate[cpu].active_mm = next;
 #endif
 		set_bit(cpu, &next->cpu_vm_mask);
-		/* Re-load page tables */
+		/*
+         * Re-load page tables
+         * movl __pa(next->pgd), %%cr3 将新进程的页面目录PGD物理地址传给cr3
+         */
 		asm volatile("movl %0,%%cr3": :"r" (__pa(next->pgd)));
 	}
 #ifdef CONFIG_SMP
